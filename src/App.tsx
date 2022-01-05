@@ -4,7 +4,7 @@ import { HomePage } from './pages/HomePage';
 
 function App() {
   return (
-    <main className="content">
+    <main className="font-mono">
       <Router>
         <Routes>
           <Route path="/" element={<HomePage />}/>
