@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useFetch } from "../hooks/useFecth";
+import sha256 from 'crypto-js/sha256';
 
 export const LoginForm = () => {
     const [emailError, setEmailError] = useState(false);
@@ -8,12 +10,16 @@ export const LoginForm = () => {
 
     const handleSubmit = (event: { preventDefault: () => void; }) => {
         event.preventDefault();
+        const data = {
+            email: email,
+            password: sha256(password).toString()
+        }
+        console.log(JSON.stringify(data));
     }
 
     const emailValidation = () => {
-        const regexp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
-        setEmailError(email.match(regexp) == null);
-        
+        const regexp = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+        setEmailError(!regexp.test(email));
     }
 
     const passwordValidation = () => {
