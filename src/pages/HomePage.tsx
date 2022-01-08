@@ -9,7 +9,7 @@ export const HomePage = () => {
                 </div>
                 <div className="basis-1/2 flex flex-col justify-center justify-items-center items-center">
                     <Link to="/login" className="ease-in duration-200 bg-blue-500 shadow-lg shadow-blue-500/50 hover:shadow-none text-white font-black rounded-md py-3 px-8 my-5 w-max lg:font-3xl">Login</Link>
-                    <Link to="/sigunp" className="ease-in duration-200 bg-indigo-500 shadow-lg shadow-indigo-500/50 hover:shadow-none text-white font-black rounded-md py-3 px-8 w-max">Sign up</Link>
+                    <Link to="/register" className="ease-in duration-200 bg-indigo-500 shadow-lg shadow-indigo-500/50 hover:shadow-none text-white font-black rounded-md py-3 px-8 w-max">Sign up</Link>
                 </div>
             </div>
         </div>
