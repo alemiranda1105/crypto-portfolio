@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useFetch } from "../hooks/useFecth";
 import sha256 from 'crypto-js/sha256';
 
 export const LoginForm = () => {
@@ -14,7 +13,22 @@ export const LoginForm = () => {
             email: email,
             password: sha256(password).toString()
         }
-        console.log(JSON.stringify(data));
+        fetch(`${process.env.REACT_APP_API_URL}/users/login`,{
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'POST',
+            body: JSON.stringify(data)
+        }).then(res => {
+            if(res.ok) {
+                res.json();
+            } else {
+                setEmailError(true);
+                setPassError(true);
+            }
+        }).then(data => {
+            console.log(data);
+        });
     }
 
     const emailValidation = () => {
@@ -33,14 +47,14 @@ export const LoginForm = () => {
                     <label htmlFor="email" className="font-black">Email</label>
                     <input autoComplete="new-password" type="email" id="email" value={email} onChange={(e) =>{ setEmail(e.target.value); emailValidation()}} placeholder="crypto@crypto.btc" className="p-2.5 rounded-md" required/>
                     {emailError &&
-                        <p className="text-red-500 font-bold">Please check your email</p>
+                        <p className="text-red-500 font-bold">Please, check your email</p>
                     }
                 </div>
                 <div className="flex flex-col">
                     <label htmlFor="password" className="font-black">Password</label>
                     <input type="password" id="password" onChange={(e) => { setPassword(e.target.value); passwordValidation() }} className="p-2.5 rounded-md" required/>
                     {passError &&
-                        <p className="text-red-500 font-bold">The password is too short!</p>
+                        <p className="text-red-500 font-bold">Please, check your password</p>
                     }
                 </div>
                 <div className="basis-1/4 flex flex-col justify-center justify-items-center items-center">

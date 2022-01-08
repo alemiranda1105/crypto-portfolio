@@ -6,7 +6,7 @@ export const useFetch = (method: string, url: string, body?: string) => {
     const [pending, setPending] = useState(false);
 
     useEffect(() => {
-        fetch(url, {
+        fetch(`${process.env.REACT_APP_API_URL}/${url}`, {
             method: method,
             body: body
         })
