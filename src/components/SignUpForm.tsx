@@ -9,11 +9,14 @@ export const SignUpForm = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const [loading, setLoading] = useState(false);
+
     const [session, setSession] = useCookies(['session']);
     const [token, setToken] = useCookies(['token']);
 
     const handleSubmit = (event: { preventDefault: () => void; }) => {
         event.preventDefault();
+        setLoading(true);
         const data = {
             email: email,
             password: sha256(password).toString()
@@ -31,11 +34,13 @@ export const SignUpForm = () => {
                 throw Error("An error has suceed");
             }
         }).then(data => {
+            setLoading(false);
             let user = data.data[0];
             let token = data.token.access_token;
             setSession('session', user.id, CookieOptions);
             setToken('token', token, CookieOptions);
         }).catch(() => {
+            setLoading(false);
             setEmailError(true);
             setPassError(true);
         });
@@ -68,7 +73,12 @@ export const SignUpForm = () => {
                     }
                 </div>
                 <div className="basis-1/4 flex flex-col justify-center justify-items-center items-center">
-                    <button type="submit" className="ease-in duration-200 bg-blue-500 shadow-lg shadow-blue-500/50 hover:shadow-none text-white font-black rounded-md py-3 px-8 my-5 w-max lg:font-3xl">Login</button>
+                    {!loading &&
+                    <button type="submit" className="ease-in duration-200 bg-indigo-500 shadow-lg shadow-indigo-500/50 hover:shadow-none text-white font-black rounded-md py-3 px-8 my-5 w-max lg:font-3xl">Join!</button>
+                    }
+                    {loading &&
+                    <button type="submit" className="ease-in duration-200 bg-indigo-500 shadow-lg shadow-indigo-500/50 hover:shadow-none text-white font-black rounded-md py-3 px-8 my-5 w-max lg:font-3xl animate-bounce">Loading...</button>
+                    }
                 </div>
             </form>
         </div>
