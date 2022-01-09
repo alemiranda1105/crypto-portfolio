@@ -1,11 +1,15 @@
 import { useState } from "react";
 import sha256 from 'crypto-js/sha256';
+import { useCookies } from "react-cookie";
 
 export const SignUpForm = () => {
     const [emailError, setEmailError] = useState(false);
     const [passError, setPassError] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    const [session, setSession] = useCookies(['session']);
+    const [token, setToken] = useCookies(['token']);
 
     const handleSubmit = (event: { preventDefault: () => void; }) => {
         event.preventDefault();
@@ -23,11 +27,16 @@ export const SignUpForm = () => {
             if(res.ok) {
                 return res.json();
             } else {
-                setEmailError(true);
-                setPassError(true);
+                throw Error("An error has suceed");
             }
         }).then(data => {
-            console.log(data);
+            let user = data.data[0];
+            let token = data.token.access_token;
+            setSession('session', user.id, { path: '/' });
+            setToken('token', token, { path: '/' });
+        }).catch(() => {
+            setEmailError(true);
+            setPassError(true);
         });
     }
 
