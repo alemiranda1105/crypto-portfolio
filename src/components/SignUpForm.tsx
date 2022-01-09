@@ -1,6 +1,7 @@
 import { useState } from "react";
 import sha256 from 'crypto-js/sha256';
 import { useCookies } from "react-cookie";
+import { CookieOptions } from "../types/CookieOptions";
 
 export const SignUpForm = () => {
     const [emailError, setEmailError] = useState(false);
@@ -32,8 +33,8 @@ export const SignUpForm = () => {
         }).then(data => {
             let user = data.data[0];
             let token = data.token.access_token;
-            setSession('session', user.id, { path: '/' });
-            setToken('token', token, { path: '/' });
+            setSession('session', user.id, CookieOptions);
+            setToken('token', token, CookieOptions);
         }).catch(() => {
             setEmailError(true);
             setPassError(true);
